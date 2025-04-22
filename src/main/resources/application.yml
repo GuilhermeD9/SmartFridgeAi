@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: SmartFridgeAi
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/smartfridge
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    database-plataform: org.hibernate.dialect.MySQL5Dialect
+    show-sql: true
+
+  flyway:
+    enabled: true
