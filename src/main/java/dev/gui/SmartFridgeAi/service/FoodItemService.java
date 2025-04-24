@@ -27,12 +27,8 @@ public class FoodItemService {
         return repository.findById(id);
     }
 
-    public FoodItem atualizar(Long id, FoodItem foodItem) {
-        if (repository.existsById(id)) {
-            return repository.save(foodItem);
-        } else {
-            return null;
-        }
+    public FoodItem atualizar(FoodItem foodItem) {
+        return repository.save(foodItem);
     }
 
     public void deletar(Long id) {

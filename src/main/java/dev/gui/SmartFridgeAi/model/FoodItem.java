@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "food_item")
@@ -20,5 +20,5 @@ public class FoodItem {
     private String nome;
     private String categoria;
     private Integer quantidade;
-    private LocalDateTime validade;
+    private LocalDate validade;
 }

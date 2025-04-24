@@ -18,26 +18,37 @@ public class FoodItemController {
         this.service = service;
     }
 
+    @PostMapping
     public ResponseEntity<FoodItem> criar(@RequestBody FoodItem foodItem) {
         FoodItem salvo = service.salvar(foodItem);
         return ResponseEntity.ok(salvo);
     }
 
+    @GetMapping
     public ResponseEntity<List<FoodItem>> listar() {
         return ResponseEntity.ok(service.listar());
     }
 
-    public ResponseEntity<Optional<FoodItem>> listarPorId(@RequestParam Long id) {
+    @GetMapping("/{id}")
+    public ResponseEntity<Optional<FoodItem>> listarPorId(@PathVariable Long id) {
         return ResponseEntity.ok(service.listarPorId(id));
     }
 
-    public ResponseEntity<Optional<FoodItem>> atualizarPorId(@RequestParam Long id, @RequestBody FoodItem foodItem) {
-        return ResponseEntity.ok(Optional.ofNullable(service.atualizar(id, foodItem)));
+    @PutMapping("/{id}")
+    public ResponseEntity<FoodItem> atualizarPorId(@PathVariable Long id, @RequestBody FoodItem foodItem) {
+        return service.listarPorId(id)
+                .map(itemExistente -> {
+                    foodItem.setId(itemExistente.getId());
+                    FoodItem atualizado = service.atualizar(foodItem);
+                    return ResponseEntity.ok(atualizado);
+                })
+                .orElse(ResponseEntity.notFound().build());
     }
 
-    public ResponseEntity<Void> deletarPorId(@RequestParam Long id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletar(@PathVariable Long id) {
         service.deletar(id);
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 }
