@@ -7,12 +7,11 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
 public class WebClientConfig {
-    @Value("${gemini.api.url:https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={YOUR_API_KEY}")
-    private String geminiUrl;
+    @Value("${gemini.api.url}")
+    private String baseUrl;
 
     @Bean
     public WebClient webClient(WebClient.Builder builder) {
-        return builder.baseUrl(geminiUrl).build();
+        return builder.baseUrl(baseUrl).build();
     }
-
 }

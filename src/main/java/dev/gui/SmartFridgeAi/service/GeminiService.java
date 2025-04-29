@@ -11,8 +11,9 @@ import java.util.Map;
 
 @Service
 public class GeminiService {
+
+    private String apiKey = System.getenv("KEY_GEMINI");
     private final WebClient webClient;
-    private String apiKey = System.getenv("API_KEY");
 
     public GeminiService(WebClient webClient) {
         this.webClient = webClient;
@@ -21,23 +22,37 @@ public class GeminiService {
     public Mono<String> generateRecipe() {
         String prompt = "Me sugira uma receita simples com ingredientes comuns.";
         Map<String, Object> requestBody = Map.of(
-                "parts", "text"
+                "contents", List.of(
+                        Map.of(
+                                "parts", List.of(
+                                        Map.of("text", prompt)
+                                )
+                        )
+                )
         );
         return webClient.post()
+                .uri(uriBuilder -> uriBuilder
+                        .path("/v1beta/models/gemini-2.0-flash:generateContent") // 👈 PATH correto!
+                        .queryParam("key", apiKey)
+                        .build())
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .bodyValue(requestBody)
                 .retrieve()
                 .bodyToMono(Map.class)
                 .map(response -> {
-                    var choices = (List<Map<String, Object>>) response.get("choices");
-                    if (choices != null && !choices.isEmpty()) {
-                        Map<String, Object> message = (Map<String, Object>) choices.get(0).get("message");
-                        return message.get("content").toString();
+                    var candidates = (List<Map<String, Object>>) response.get("candidates");
+                    if (candidates != null && !candidates.isEmpty()) {
+                        Map<String, Object> content = (Map<String, Object>) candidates.get(0).get("content");
+                        List<Map<String, Object>> parts = (List<Map<String, Object>>) content.get("parts");
+                        if (parts != null && !parts.isEmpty()) {
+                            return parts.get(0).get("text").toString();
+                        }
                     }
                     return "Nenhuma receita foi gerada.";
                 });
     }
 }
+
 
 /*
 curl "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=YOUR_API_KEY" \

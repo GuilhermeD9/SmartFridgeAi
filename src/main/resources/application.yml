@@ -15,9 +15,7 @@ spring:
   flyway:
     enabled: true
 
-  gemini:
-    api:
-      url: https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=YOUR_API_KEY
-
+gemini:
   api:
+    url: https://generativelanguage.googleapis.com
     key: ${KEY_GEMINI}
