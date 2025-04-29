@@ -1,5 +1,6 @@
 package dev.gui.SmartFridgeAi.service;
 
+import dev.gui.SmartFridgeAi.model.FoodItem;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -8,6 +9,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class GeminiService {
@@ -19,8 +21,13 @@ public class GeminiService {
         this.webClient = webClient;
     }
 
-    public Mono<String> generateRecipe() {
-        String prompt = "Me sugira uma receita simples com ingredientes comuns.";
+    public Mono<String> generateRecipe(List<FoodItem> foodItems) {
+        String alimentos = foodItems.stream()
+                .map(item -> String.format("%s (%s) - Quantidade: %d, Validade: %s",
+                        item.getNome(), item.getCategoria(), item.getQuantidade(), item.getValidade()))
+                .collect(Collectors.joining("\n"));
+
+        String prompt = "Com base nos meus alimentos, faça uma receita com os seguintes itens:\n " + alimentos;
         Map<String, Object> requestBody = Map.of(
                 "contents", List.of(
                         Map.of(
@@ -32,7 +39,7 @@ public class GeminiService {
         );
         return webClient.post()
                 .uri(uriBuilder -> uriBuilder
-                        .path("/v1beta/models/gemini-2.0-flash:generateContent") // 👈 PATH correto!
+                        .path("/v1beta/models/gemini-2.0-flash:generateContent")
                         .queryParam("key", apiKey)
                         .build())
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)

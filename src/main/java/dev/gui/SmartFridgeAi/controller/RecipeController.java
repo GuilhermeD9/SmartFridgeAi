@@ -1,5 +1,6 @@
 package dev.gui.SmartFridgeAi.controller;
 
+import dev.gui.SmartFridgeAi.service.FoodItemService;
 import dev.gui.SmartFridgeAi.service.GeminiService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,14 +11,16 @@ import reactor.core.publisher.Mono;
 public class RecipeController {
 
     private GeminiService geminiService;
+    private FoodItemService foodItemService;
 
-    public RecipeController(GeminiService geminiService) {
+    public RecipeController(GeminiService geminiService, FoodItemService foodItemService) {
         this.geminiService = geminiService;
+        this.foodItemService = foodItemService;
     }
 
     @GetMapping("/generate")
     public Mono<ResponseEntity<String>> generateRecipe() {
-        return geminiService.generateRecipe()
+        return geminiService.generateRecipe(foodItemService.listar())
                 .map(recipe -> ResponseEntity.ok(recipe))
                 .defaultIfEmpty(ResponseEntity.noContent().build());
     }
