@@ -1,4 +1,4 @@
-package dev.gui.SmartFridgeAi.controller;
+package dev.gui.SmartFridgeAi.infra.presentation;
 
 import dev.gui.SmartFridgeAi.service.FoodItemService;
 import dev.gui.SmartFridgeAi.service.GeminiService;

@@ -1,7 +1,7 @@
 package dev.gui.SmartFridgeAi.service;
 
-import dev.gui.SmartFridgeAi.model.FoodItem;
-import dev.gui.SmartFridgeAi.repository.FoodItemRepository;
+import dev.gui.SmartFridgeAi.infra.persistence.FoodItemEntity;
+import dev.gui.SmartFridgeAi.infra.persistence.FoodItemRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,19 +15,19 @@ public class FoodItemService {
         this.repository = repository;
     }
 
-    public FoodItem salvar(FoodItem foodItem) {
+    public FoodItemEntity salvar(FoodItemEntity foodItem) {
         return repository.save(foodItem);
     }
 
-    public List<FoodItem> listar() {
+    public List<FoodItemEntity> listar() {
         return repository.findAll();
     }
 
-    public Optional<FoodItem> listarPorId(Long id) {
+    public Optional<FoodItemEntity> listarPorId(Long id) {
         return repository.findById(id);
     }
 
-    public FoodItem atualizar(FoodItem foodItem) {
+    public FoodItemEntity atualizar(FoodItemEntity foodItem) {
         return repository.save(foodItem);
     }
 

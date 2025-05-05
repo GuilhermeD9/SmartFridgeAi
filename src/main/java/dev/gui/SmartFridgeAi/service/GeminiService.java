@@ -1,6 +1,6 @@
 package dev.gui.SmartFridgeAi.service;
 
-import dev.gui.SmartFridgeAi.model.FoodItem;
+import dev.gui.SmartFridgeAi.infra.persistence.FoodItemEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -21,8 +21,8 @@ public class GeminiService {
         this.webClient = webClient;
     }
 
-    public Mono<String> generateRecipe(List<FoodItem> foodItems) {
-        String alimentos = foodItems.stream()
+    public Mono<String> generateRecipe(List<FoodItemEntity> foodItemEntities) {
+        String alimentos = foodItemEntities.stream()
                 .map(item -> String.format("%s (%s) - Quantidade: %d, Validade: %s",
                         item.getNome(), item.getCategoria(), item.getQuantidade(), item.getValidade()))
                 .collect(Collectors.joining("\n"));

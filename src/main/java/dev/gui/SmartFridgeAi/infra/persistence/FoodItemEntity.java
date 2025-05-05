@@ -1,4 +1,4 @@
-package dev.gui.SmartFridgeAi.model;
+package dev.gui.SmartFridgeAi.infra.persistence;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class FoodItem {
+public class FoodItemEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

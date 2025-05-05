@@ -1,4 +1,4 @@
-package dev.gui.SmartFridgeAi.config;
+package dev.gui.SmartFridgeAi.infra.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

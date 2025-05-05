@@ -1,6 +1,6 @@
-package dev.gui.SmartFridgeAi.controller;
+package dev.gui.SmartFridgeAi.infra.presentation;
 
-import dev.gui.SmartFridgeAi.model.FoodItem;
+import dev.gui.SmartFridgeAi.infra.persistence.FoodItemEntity;
 import dev.gui.SmartFridgeAi.service.FoodItemService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,27 +19,27 @@ public class FoodItemController {
     }
 
     @PostMapping
-    public ResponseEntity<FoodItem> criar(@RequestBody FoodItem foodItem) {
-        FoodItem salvo = service.salvar(foodItem);
+    public ResponseEntity<FoodItemEntity> criar(@RequestBody FoodItemEntity foodItem) {
+        FoodItemEntity salvo = service.salvar(foodItem);
         return ResponseEntity.ok(salvo);
     }
 
     @GetMapping
-    public ResponseEntity<List<FoodItem>> listar() {
+    public ResponseEntity<List<FoodItemEntity>> listar() {
         return ResponseEntity.ok(service.listar());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<FoodItem>> listarPorId(@PathVariable Long id) {
+    public ResponseEntity<Optional<FoodItemEntity>> listarPorId(@PathVariable Long id) {
         return ResponseEntity.ok(service.listarPorId(id));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<FoodItem> atualizarPorId(@PathVariable Long id, @RequestBody FoodItem foodItem) {
+    public ResponseEntity<FoodItemEntity> atualizarPorId(@PathVariable Long id, @RequestBody FoodItemEntity foodItem) {
         return service.listarPorId(id)
                 .map(itemExistente -> {
                     foodItem.setId(itemExistente.getId());
-                    FoodItem atualizado = service.atualizar(foodItem);
+                    FoodItemEntity atualizado = service.atualizar(foodItem);
                     return ResponseEntity.ok(atualizado);
                 })
                 .orElse(ResponseEntity.notFound().build());
