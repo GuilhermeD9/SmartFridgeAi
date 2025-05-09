@@ -1,7 +1,10 @@
 package dev.gui.SmartFridgeAi.infra.config;
 
 import dev.gui.SmartFridgeAi.core.gateway.FoodItemGateway;
+import dev.gui.SmartFridgeAi.core.gateway.GeminiGetaway;
 import dev.gui.SmartFridgeAi.core.usecases.foodItem.*;
+import dev.gui.SmartFridgeAi.core.usecases.gemini.GeminiUsecase;
+import dev.gui.SmartFridgeAi.core.usecases.gemini.GeminiUsecaseImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -30,5 +33,10 @@ public class BeanConfiguration {
     @Bean
     public FiltrarIdFoodItemUsecase filtrarPorIdFoodItem(FoodItemGateway gateway) {
         return new FiltrarIdFoodItemUsecaseImpl(gateway);
+    }
+
+    @Bean
+    GeminiUsecase generateRecipe(GeminiGetaway getaway) {
+        return new GeminiUsecaseImpl(getaway);
     }
 }

@@ -1,9 +1,10 @@
-package dev.gui.SmartFridgeAi.service;
+package dev.gui.SmartFridgeAi.infra.gateway;
 
+import dev.gui.SmartFridgeAi.core.gateway.GeminiGetaway;
 import dev.gui.SmartFridgeAi.infra.persistence.FoodItemEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
@@ -11,18 +12,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@Service
-public class GeminiService {
-
+@Component
+public class GeminiRepositoryGetaway implements GeminiGetaway {
     private String apiKey = System.getenv("KEY_GEMINI");
     private final WebClient webClient;
 
-    public GeminiService(WebClient webClient) {
+    public GeminiRepositoryGetaway(WebClient webClient) {
         this.webClient = webClient;
     }
 
-    public Mono<String> generateRecipe(List<FoodItemEntity> foodItemEntities) {
-        String alimentos = foodItemEntities.stream()
+    @Override
+    public Mono<String> generateRecipe(List<FoodItemEntity> foodItemList) {
+        String alimentos = foodItemList.stream()
                 .map(item -> String.format("%s (%s) - Quantidade: %d, Validade: %s",
                         item.getNome(), item.getCategoria(), item.getQuantidade(), item.getValidade()))
                 .collect(Collectors.joining("\n"));
@@ -59,21 +60,3 @@ public class GeminiService {
                 });
     }
 }
-
-
-/*
-curl "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=YOUR_API_KEY" \
-  -H 'Content-Type: application/json' \
-  -X POST \
-  -d '{
-    "contents": [
-      {
-        "parts": [
-          {
-            "text": "Explain how AI works in a few words"
-          }
-        ]
-      }
-    ]
-  }'
- */
