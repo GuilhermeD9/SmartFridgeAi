@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>dev.gui</groupId>
-	<artifactId>SmartFridgeAi</artifactId>
+	<artifactId>TripPlannerAi</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>SmartFridgeAi</name>
-	<description>Cadastro de alimentos com sugestão de alimentos com base em bd</description>
+	<name>TripPlannerAi</name>
+	<description>Sugestão de roteiros de viagem com base em bd</description>
 	<url/>
 	<licenses>
 		<license/>
