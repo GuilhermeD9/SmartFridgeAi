@@ -1,6 +1,9 @@
 spring:
   application:
     name: SmartFridgeAi
+  ai:
+    openai:
+      api-key: ${KEY_OPENAI}
 
   datasource:
     url: jdbc:mysql://localhost:3306/tripplannerai
